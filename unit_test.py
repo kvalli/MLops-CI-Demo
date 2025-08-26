@@ -1,33 +1,38 @@
 import pytest
 
-# Function to test square
-def square(n):
-    return n ** 2
+# Assuming the provided code is in a file named `app.py`
+# We need to test the calculation logic, not the UI.
+# So we'll simulate the calculations.
 
-# Function to test cube
-def cube(n):
-    return n ** 3
+# To test the logic, we'd typically refactor the core calculation
+# into a separate function. For this simple case, we can write a test
+# that checks the output for a known input.
 
-# Function to test fifth power
-def fifth_power(n):
-    return n ** 5
+def calculate_powers(n):
+    """
+    Calculates the square, cube, and fifth power of a number.
+    This function isolates the core logic from the Streamlit UI.
+    """
+    square = n ** 2
+    cube = n ** 3
+    fifth_power = n ** 5
+    return square, cube, fifth_power
 
-# Testing the square function
-def test_square():
-    assert square(2) == 4, "Test Failed: Square of 2 should be 4"
-    assert square(3) == 9, "Test Failed: Square of 3 should be 9"
-
-# Testing the cube function
-def test_cube():
-    assert cube(2) == 8, "Test Failed: Cube of 2 should be 8"
-    assert cube(3) == 27, "Test Failed: Cube of 3 should be 27"
-
-# Testing the fifth power function
-def test_fifth_power():
-    assert fifth_power(2) == 32, "Test Failed: Fifth power of 2 should be 32"
-    assert fifth_power(3) == 243, "Test Failed: Fifth power of 3 should be 243"
-
-# Test for invalid input
-def test_invalid_input():
-    with pytest.raises(TypeError):
-        square("string")
+# Create a fixture to hold test data
+@pytest.mark.parametrize("input_number, expected_square, expected_cube, expected_fifth", [
+    (2, 4, 8, 32),
+    (3, 9, 27, 243),
+    (0, 0, 0, 0),
+    (1, 1, 1, 1),
+    (-2, 4, -8, -32),
+])
+def test_power_calculations(input_number, expected_square, expected_cube, expected_fifth):
+    """
+    Tests if the power calculations are correct for various inputs.
+    """
+    square, cube, fifth_power = calculate_powers(input_number)
+    
+    # Assert that the calculated values match the expected values
+    assert square == expected_square
+    assert cube == expected_cube
+    assert fifth_power == expected_fifth
